@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+<head><title>Run Kubernetes</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+  <style>
+  @import url("https://fonts.googleapis.com/css?family=Roboto:400");
+@keyframes anione{
+    from {background-color: #CE91F2;}
+    to {background-color: #91F2EF;}
+  }
+body{
+  
+  animation-name: anione;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+}
+
+.column1 {
+
+  margin-left: 25%;
+  margin-right:25%;
+  margin-top: 2%;
+  width: 50%;
+  padding: 15px;
+  border-radius: 20px;
+  box-shadow: 3px 3px 10px 10px grey; 
+}
+
+.column2 {
+
+  margin-left: 8%;
+  margin-right: 8%;
+  margin-top: 3%;
+  width: 30%;
+  padding: 15px;
+  border-radius: 20px;
+  box-shadow: 3px 3px 10px 10px grey; 
+}
+.flex{
+ display: flex;
+ flex-wrap: wrap;
+ justify-content:center;
+}
+input[type=text]{
+
+ padding: 8px 5px;
+ margin: 8px 0;
+ box-sizing: border-box;
+ border: 3px solid #287393;
+ -webkit-trasition: 0.5s;
+ transition: 0.5s;
+ border-radius: 10px;
+ outline: none;
+}
+input[type=text]:focus{
+border: 3px solid #CE91F2;
+}
+ input[type=submit]{
+  background-color: #287393;
+  color: #fff;
+  padding:12px 20px;
+  border: 1px solid #eee;
+  border-radius: 20px;
+  box-shadow: 5px 5px 5px #eee;
+  cursor: pointer;
+  float: center;
+}
+input[type=submit]:hover{
+  background-color: #CE91F2;
+
+}
+
+
+</style>
+</head>
+<body>
+<canter> Run kubernetes </canter>
+<div class="column1" style="background-color:#E8E8E8;" > 
+<center><h1 style="color: #287393;">List Pod </h1>
+<input type="submit" value="Click here" onclick="listpod()" /></center><br>
+
+<pre><center>
+<div id="d1"> Here We have output .....</div>
+</center>
+</pre>
+</div>
+
+<div class="flex">
+<div class="column2" style="background-color:#E8E8E8;" > 
+<center><h1 style="color: #287393;">Launch Pod </h1>
+
+pod name &emsp; <input id="In1" type="text" name="x" placeholder="Enter pod name" /><br>
+image name &ensp; <input id="In2" type="text" name="y" value="vimal13/apache-webserver-php" /><br>
+<input type="submit" value="Click here" onclick="create()" /></center>
+
+<pre>
+<div id="d2"> Here We have output .....</div>
+
+</pre>
+</div>
+
+<div class="column2" style="background-color:#E8E8E8;" > 
+<center><h1 style="color: #287393;">Run Pod </h1>
+Pod Name &emsp; <input id="In3" type="text" name="x" placeholder="Enter pod name" /><br>
+Image name &ensp; <input id="In4" type="text" name="y" value="vimal13/apache-webserver-php" /><br>
+<input type="submit" value="Click here" onclick="run()" /></center>
+
+<pre>
+<div id="d3"> Here We have output .....</div>
+
+</pre>
+</div>
+
+<div class="column2" style="background-color:#E8E8E8;" > 
+<center><h1 style="color: #287393;">Expose Services</h1>
+Pod name &emsp; <input id="In3" type="text" name="x" placeholder="Enter pod name" /><br>
+Port number&ensp; <input id="In4" type="text" name="y" placeholder="Enter the port no."/><br>
+<input type="submit" value="Click " onclick="expose()" /></center><br>
+
+<pre>
+<div id="d4"> Here We have output .....</div>
+
+</pre>
+</div>
+
+<div class="column2" style="background-color:#E8E8E8;" > 
+<center><h1 style="color: #287393;">Scale the replica</h1>
+Enter the name &ensp;<input id="in5" type="text" name="x" placeholder="name"><br>
+Enter the  Replica &ensp;<input id="in6" type="text" name="y" placeholder="Enter the no. of replica" ><br>
+<br>
+<input type="submit" value="Click here" onclick="replica()"/></center>
+
+<pre>
+<div id="d5"> Here We have output .....</div>
+
+</pre>
+</div>
+
+<div class="column2" style="background-color:#E8E8E8;" > 
+<center><h1 style="color: #287393;">Delete specific </h1>
+Enter the name<input id="in7" type="text" name="x" placeholder="name"><br>
+<input type="submit" value="Click here" onclick="delete_pod()" /></center><br>
+
+<pre>
+<div id="d6"> Here We have output .....</div>
+
+</pre>
+</div>
+
+<div class="column2" style="background-color:#E8E8E8;" > 
+<center><h1 style="color: #287393;">delete all</h1><br>
+<input type="submit" value="Click " onclick="delete_all()" /></center><br>
+
+<pre>
+<div id="d7"> Here We have output .....</div>
+
+</pre>
+</div>
+
+</pre>
+</div>
+
+
+</div>
+<script> 
+function listpod() {
+var xhr = new XMLHttpRequest();
+xhr.open("GET","http://192.168.99.101/cgi-bin/listpod.py",true);
+xhr.send();
+
+xhr.onload=function(){
+var output = xhr.responseText;
+
+document.getElementById("d1").innerHTML = output;
+}
+}
+function create(){
+var pod = document.getElementById("In1").value
+var img = document.getElementById("In2").value
+var xhr = new XMLHttpRequest();
+xhr.open("GET","http://192.168.99.101/cgi-bin/launch.py?x="+pod+"&y="+img,true);
+xhr.send();
+
+xhr.onload=function(){
+var output = xhr.responseText;
+
+document.getElementById("d2").innerHTML = output;
+}
+}
+function run(){
+var pod = document.getElementById("In3").value
+var img = document.getElementById("In4").value
+var xhr = new XMLHttpRequest();
+xhr.open("GET","http://192.168.99.101/cgi-bin/run.py?x="+pod+"&y="+img,true);
+xhr.send();
+
+xhr.onload=function(){
+var output = xhr.responseText;
+
+document.getElementById("d3").innerHTML = output;
+}
+}
+function expose(){
+var pod = document.getElementById("In5").value
+var port = document.getElementById("In6").value
+var xhr = new XMLHttpRequest();
+xhr.open("GET","http://192.168.99.101/cgi-bin/expose.py?x="+pod+"&y="+port,true);
+xhr.send();
+
+xhr.onload=function(){
+var output = xhr.responseText;
+
+document.getElementById("d4").innerHTML = output;
+}
+}
+function replica() {
+var name= document.getElementById("in7").value
+var rep= document.getElementById("in8").value
+var xhr = new XMLHttpRequest();
+xhr.open("GET","http://192.168.99.101/cgi-bin/replica.py?y="+name+"&z="+rep,true);
+xhr.send();
+
+xhr.onload=function(){
+var output = xhr.responseText;
+
+document.getElementById("d5").innerHTML = output;
+}
+}
+function delete_pod() {
+var name= document.getElementById("in9").value
+
+var xhr = new XMLHttpRequest();
+xhr.open("GET","http://192.168.99.101/cgi-bin/delete-pod.py?x="+name,true);
+xhr.send();
+
+xhr.onload=function(){
+var output = xhr.responseText;
+
+document.getElementById("d6").innerHTML = output;
+}
+}
+function delete_all() {
+var xhr = new XMLHttpRequest();
+xhr.open("GET","http://192.168.99.101/cgi-bin/delete-all.py",true);
+xhr.send();
+
+xhr.onload=function(){
+var output = xhr.responseText;
+
+document.getElementById("d7").innerHTML = output;
+}
+}
+</script>
+
+</body>
+</html>
